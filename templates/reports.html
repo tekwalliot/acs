@@ -36,7 +36,7 @@
                     <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
                         <div class="widget-content widget-content-area br-6">
                             <div class="table-responsive mb-4 mt-4">
-                                <table id="html5-extension" class="table table-bordered" style="width:100%; font-weight:normal;"> 
+                                <table id="html5-extension" class="table table-bordered " style="width:100%; font-weight:normal;"> 
                                     <thead>
                                         <tr>
                                             <th>ID</th>
@@ -46,22 +46,20 @@
                                             <th>Location</th>
                                             <th>Capacity</th>
                                             <th>PO No</th>
-                                            <th>CMC Year</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                       {% for x in table_data %}
                                             <tr>
-                                              <td>{{x.rmsId}}</td>
-                                              <td>{{x.custName}}</td>
-                                              <td>{{x.regID}}</td>
-                                              <td>{{x.custMob}}</td>
-                                              <td>{{x.location}}</td>
-                                              <td>{{x.capacity}}</td>
-                                              <td>{{x.poNo}}</td>
-                                              <td>{{x.cmcY}}</td>
-                                              <td><a href="{% url 'idwise' x.rmsId %}" class="btn btn-dark">Open</a></td>
+                                              <td style="color: green">{{x.rmsId}}</td>
+                                              <td style="color: green">{{x.custName}}</td>
+                                              <td style="color: green">{{x.regID}}</td>
+                                              <td style="color: green">{{x.custMob}}</td>
+                                              <td style="color: green">{{x.location}}</td>
+                                              <td style="color: green">{{x.capacity}}</td>
+                                              <td style="color: green">{{x.poNo}}</td>
+                                              <td><a href="{% url 'idwise' x.rmsId %}" class="btn btn-primary">Open</a></td>
                                             </tr>
                                       {% endfor %}
                                     </tbody>

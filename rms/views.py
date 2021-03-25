@@ -4,7 +4,7 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from django.db.models import Sum, Avg
 
 import json
@@ -24,7 +24,6 @@ def home(request):
 	# sitedtls = SiteDetails.objects.all()[randint(0, count - 1)]
 	sitedtls = SiteDetails.objects.all()[randint(0, count - 1)]
 
-
 	sitermsID = sitedtls.rmsId
 	homeid.objects.filter(id=1).update(homeId=sitermsID)
 
@@ -33,11 +32,27 @@ def home(request):
 	except SiteData.DoesNotExist:
 		return HttpResponse('<h2>This Customer Do Not Have Any Data</h2>')
 
+	
+#automatic date change (cuurent past 90 days)
+	today_date = date.today()
+	past_date = sitedata.Date
 
+	if (past_date != today_date): 
+		delta_date = today_date-past_date
+		delta_days =  delta_date.days
+		#print(today_date+timedelta(days=delta_days))
+
+		y=SiteData.objects.filter(rmsId=sitermsID)
+		for x in y:
+			x.Date = x.Date+timedelta(days=delta_days)
+			x.save()
+
+		sitedata = SiteData.objects.filter(rmsId=sitermsID).latest('Date')
+			
 	y = sitedata.lpd
 	while y==0:
 		newdate = sitedata.Date - timedelta(days=1)
-		print(newdate)
+		#print(newdate)
 		sitedata = SiteData.objects.filter(rmsId=sitermsID) & SiteData.objects.filter(Date=newdate)
 		sitedata = sitedata.latest('Date')
 		y = sitedata.lpd
@@ -72,7 +87,7 @@ def index1(request):
 	y = sitedata.lpd
 	while y==0:
 		newdate = sitedata.Date - timedelta(days=1)
-		print(newdate)
+		#print(newdate)
 		sitedata = SiteData.objects.filter(rmsId=sitermsID) & SiteData.objects.filter(Date=newdate)
 		sitedata = sitedata.latest('Date')
 		y = sitedata.lpd
@@ -102,6 +117,22 @@ def search(request):
 			sitedata = SiteData.objects.filter(rmsId=id_no).latest('Date')
 		except SiteData.DoesNotExist:
 			return HttpResponse('<h2>Customer/Entered ID Does Not Exists</h2>')
+
+#automatic date change (cuurent past 90 days)
+		today_date = date.today()
+		past_date = sitedata.Date
+
+		if (past_date != today_date): 
+			delta_date = today_date-past_date
+			delta_days =  delta_date.days
+			#print(today_date+timedelta(days=delta_days))
+
+			y=SiteData.objects.filter(rmsId=id_no)
+			for x in y:
+				x.Date = x.Date+timedelta(days=delta_days)
+				x.save()
+
+		sitedata = SiteData.objects.filter(rmsId=id_no).latest('Date')
 
 		y = sitedata.lpd
 		while y==0:
@@ -138,6 +169,22 @@ def openId(request, rmsid):
 		sitedata = SiteData.objects.filter(rmsId=rmsid).latest('Date')
 	except SiteData.DoesNotExist:
 		return HttpResponse('<h2>This Customer Do Not Have Any Data</h2>')
+
+	#automatic date change (cuurent past 90 days)
+	today_date = date.today()
+	past_date = sitedata.Date
+
+	if (past_date != today_date): 
+		delta_date = today_date-past_date
+		delta_days =  delta_date.days
+		#print(today_date+timedelta(days=delta_days))
+
+		y=SiteData.objects.filter(rmsId=rmsid)
+		for x in y:
+			x.Date = x.Date+timedelta(days=delta_days)
+			x.save()
+
+		sitedata = SiteData.objects.filter(rmsId=rmsid).latest('Date')
 
 	y = sitedata.lpd
 	while y==0:
@@ -187,9 +234,25 @@ def datarep1(request):
 			return HttpResponse('<h2>Enter ID Before Hit Search Button</h2>')
 
 		try:
-			table_data = SiteData.objects.filter(rmsId=id_no)
+			table_data = SiteData.objects.filter(rmsId=id_no).latest('Date')
 		except SiteData.DoesNotExist:
 			return HttpResponse('<h2>Customer/Entered ID Does Not Exists</h2>')
+
+		#automatic date change (cuurent past 90 days)
+		today_date = date.today()
+		past_date = table_data.Date
+
+		if (past_date != today_date): 
+			delta_date = today_date-past_date
+			delta_days =  delta_date.days
+			#print(today_date+timedelta(days=delta_days))
+
+			y=SiteData.objects.filter(rmsId=id_no)
+			for x in y:
+				x.Date = x.Date+timedelta(days=delta_days)
+				x.save()
+
+		table_data = SiteData.objects.filter(rmsId=id_no)
 
 		nDays = SiteData.objects.filter(rmsId=id_no).count()
 		tEnergy = SiteData.objects.filter(rmsId=id_no).aggregate(Sum('dcenergy')).get('dcenergy__sum')
