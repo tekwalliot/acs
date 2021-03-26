@@ -34,7 +34,8 @@ def home(request):
 
 	
 #automatic date change (cuurent past 90 days)
-	today_date = date.today()
+	today_date = date.today()-timedelta(days=1)
+	#print(today_date)
 	past_date = sitedata.Date
 
 	if (past_date != today_date): 
@@ -119,7 +120,7 @@ def search(request):
 			return HttpResponse('<h2>Customer/Entered ID Does Not Exists</h2>')
 
 #automatic date change (cuurent past 90 days)
-		today_date = date.today()
+		today_date = date.today()-timedelta(days=1)
 		past_date = sitedata.Date
 
 		if (past_date != today_date): 
@@ -171,7 +172,7 @@ def openId(request, rmsid):
 		return HttpResponse('<h2>This Customer Do Not Have Any Data</h2>')
 
 	#automatic date change (cuurent past 90 days)
-	today_date = date.today()
+	today_date = date.today()-timedelta(days=1)
 	past_date = sitedata.Date
 
 	if (past_date != today_date): 
@@ -239,7 +240,7 @@ def datarep1(request):
 			return HttpResponse('<h2>Customer/Entered ID Does Not Exists</h2>')
 
 		#automatic date change (cuurent past 90 days)
-		today_date = date.today()
+		today_date = date.today()-timedelta(days=1)
 		past_date = table_data.Date
 
 		if (past_date != today_date): 
